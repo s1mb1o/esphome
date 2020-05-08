@@ -64,6 +64,8 @@ FILTER_PLATFORMIO_LINES = [
 
 
 def run_platformio_cli(*args, **kwargs):
+    os.environ["PLATFORMIO_CACHE_DIR"] = os.path.join('/data', '.cache')
+    os.environ["PLATFORMIO_BUILD_CACHE_DIR"] = os.path.join('/data', '.build_cache')
     os.environ["PLATFORMIO_FORCE_COLOR"] = "true"
     os.environ["PLATFORMIO_BUILD_DIR"] = os.path.abspath(CORE.relative_pioenvs_path())
     os.environ["PLATFORMIO_LIBDEPS_DIR"] = os.path.abspath(CORE.relative_piolibdeps_path())
@@ -83,6 +85,7 @@ def run_platformio_cli(*args, **kwargs):
 
 def run_platformio_cli_run(config, verbose, *args, **kwargs):
     command = ['run', '-d', CORE.build_path]
+    command += ['-j', '1']
     if verbose:
         command += ['-v']
     command += list(args)
